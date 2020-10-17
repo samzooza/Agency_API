@@ -36,18 +36,13 @@ $api->version('v1', function($api){
     // });  
 });
 
-/*User*/
+/* user register */
 $router->group(['prefix' => 'api/user'], function($router) {
-    $router->get('get', 'UserController@get');
-    $router->get('get/{id}', 'UserController@getById');
-
-    // token required for
     //$router->group(['middleware'=>'auth'], function($router) {
-        $router->get('getidentity', 'UserController@getidentity');
-        $router->post('register', 'UserController@register');
-        $router->post('create', 'UserController@create');
-        $router->post('update/{id}', 'UserController@update');
-        $router->post('delete/{id}', 'UserController@delete');
+        $router->post('register', 'UserRegisterController@register');
+        // $router->post('create', 'UserRegisterController@create');
+        // $router->post('update/{id}', 'UserRegisterController@update');
+        // $router->post('delete/{id}', 'UserRegisterController@delete');
     //});
 });
 
