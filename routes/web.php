@@ -38,12 +38,8 @@ $api->version('v1', function($api){
 
 /* user register */
 $router->group(['prefix' => 'api/user'], function($router) {
-    //$router->group(['middleware'=>'auth'], function($router) {
-        $router->post('register', 'UserRegisterController@register');
-        // $router->post('create', 'UserRegisterController@create');
-        // $router->post('update/{id}', 'UserRegisterController@update');
-        // $router->post('delete/{id}', 'UserRegisterController@delete');
-    //});
+    $router->post('login', 'UserController@login');
+    $router->post('register', 'UserController@register');
 });
 
 /*Sample*/

@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
-use App\Models\UserRegister;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserRegisterRepository 
 {
@@ -16,9 +18,11 @@ class UserRegisterRepository
             'account.password' => 'required|min:8|max:100',
             // user_info
             'user_info.title_code_th' => 'required|max:20',
+            'user_info.title_name_th' => 'required|max:100',
             'user_info.first_name_th' => 'required|max:100',
             'user_info.last_name_th' => 'required|max:100',
             'user_info.title_code_int' => 'max:20',
+            'user_info.title_name_th' => 'max:100',
             'user_info.first_name_int' => 'max:100',
             'user_info.last_name_int' => 'max:100',
             'user_info.birth_date_dt' => 'date',
@@ -50,25 +54,25 @@ class UserRegisterRepository
             'contact_address.faxno' => 'max:50',
             'contact_address.email' => 'email|max:100',
             'contact_address.active_flag' => 'numeric',
-            // doc_adress
-            'doc_adress.address_type' => 'required|numeric',
-            'doc_adress.address_type_txt' => 'required|max:100',
-            'doc_adress.addr_no' => 'max:100',
-            'doc_adress.addr_moo' => 'max:100',
-            'doc_adress.addr_building_village' => 'max:100',
-            'doc_adress.addr_soi' => 'max:100',
-            'doc_adress.addr_thanon_road' => 'max:100',
-            'doc_adress.addr_tambonid' => 'numeric',
-            'doc_adress.addr_tambon_name' => 'max:50',
-            'doc_adress.addr_ampid' => 'numeric',
-            'doc_adress.addr_amphur_name' => 'max:50',
-            'doc_adress.addr_proid' => 'max:5',
-            'doc_adress.addr_province_name' => 'max:20',
-            'doc_adress.mobilephone' => 'max:50',
-            'doc_adress.telephone' => 'max:50',
-            'doc_adress.faxno' => 'max:50',
-            'doc_adress.email' => 'email|max:100',
-            'doc_adress.active_flag' => 'numeric',
+            // doc_address
+            'doc_address.address_type' => 'required|numeric',
+            'doc_address.address_type_txt' => 'required|max:100',
+            'doc_address.addr_no' => 'max:100',
+            'doc_address.addr_moo' => 'max:100',
+            'doc_address.addr_building_village' => 'max:100',
+            'doc_address.addr_soi' => 'max:100',
+            'doc_address.addr_thanon_road' => 'max:100',
+            'doc_address.addr_tambonid' => 'numeric',
+            'doc_address.addr_tambon_name' => 'max:50',
+            'doc_address.addr_ampid' => 'numeric',
+            'doc_address.addr_amphur_name' => 'max:50',
+            'doc_address.addr_proid' => 'max:5',
+            'doc_address.addr_province_name' => 'max:20',
+            'doc_address.mobilephone' => 'max:50',
+            'doc_address.telephone' => 'max:50',
+            'doc_address.faxno' => 'max:50',
+            'doc_address.email' => 'email|max:100',
+            'doc_address.active_flag' => 'numeric',
             //other_info
             'other_info.occupation_code' => 'numeric',
             'other_info.occupation_name' => 'max:100',
@@ -80,76 +84,103 @@ class UserRegisterRepository
 
     #region Create/Update/Delete
     public function create($input) {
-        //$user->password = Hash::make($input['password']);
-        $user = new UserRegister();
-        $user->useruuid = $input['useruuid'];
-        $user->email = $input['email'];
-        $user->display_user_name = $input['display_user_name'];
-        $user->picture_profile_url = $input['picture_profile_url'];
-        $user->title_code_th = $input['title_code_th'];
-        $user->title_name_th = $input['title_name_th'];
-        $user->first_name_th = $input['first_name_th'];
-        $user->last_name_th = $input['last_name_th'];
-        $user->title_code_int = $input['title_code_int'];
-        $user->title_name_int = $input['title_name_int'];
-        $user->first_name_int = $input['first_name_int'];
-        $user->last_name_int = $input['last_name_int'];
-        $user->birth_date_dt = $input['birth_date_dt'];
-        $user->birth_date_text = $input['birth_date_text'];
-        $user->aged = $input['aged'];
-        $user->gender_text = $input['gender_text'];
-        $user->religion_code = $input['religion_code'];
-        $user->religion_text = $input['religion_text'];
-        $user->citizen_id = $input['citizen_id'];
-        $user->citizen_id_issuedate_dt = $input['citizen_id_issuedate_dt'];
-        $user->citizen_id_issuedate_text = $input['citizen_id_issuedate_text'];
-        $user->tax_id = $input['tax_id'];
-        $user->user_note = $input['user_note'];
-        $user->admin_flag = $input['admin_flag'];
-        $user->active_flag = $input['active_flag'];
-        $user->receive_noti_flag = $input['receive_noti_flag'];
-        $user->last_login_ts = $input['last_login_ts'];
-        $user->created_by = $input['created_by'];
-        $user->save();
-    }
+        $uuid32 = Str::uuid()->toString();
+        $uuid16 = substr(str_replace("-", "", $uuid32), 0, 16);
 
-    public function update($id, $input) {
-        $user = UserRegister::findOrFail($id);
-        $user->useruuid = $input['useruuid'];
-        $user->email = $input['email'];
-        $user->display_user_name = $input['display_user_name'];
-        $user->picture_profile_url = $input['picture_profile_url'];
-        $user->title_code_th = $input['title_code_th'];
-        $user->title_name_th = $input['title_name_th'];
-        $user->first_name_th = $input['first_name_th'];
-        $user->last_name_th = $input['last_name_th'];
-        $user->title_code_int = $input['title_code_int'];
-        $user->title_name_int = $input['title_name_int'];
-        $user->first_name_int = $input['first_name_int'];
-        $user->last_name_int = $input['last_name_int'];
-        $user->birth_date_dt = $input['birth_date_dt'];
-        $user->birth_date_text = $input['birth_date_text'];
-        $user->aged = $input['aged'];
-        $user->gender_text = $input['gender_text'];
-        $user->religion_code = $input['religion_code'];
-        $user->religion_text = $input['religion_text'];
-        $user->citizen_id = $input['citizen_id'];
-        $user->citizen_id_issuedate_dt = $input['citizen_id_issuedate_dt'];
-        $user->citizen_id_issuedate_text = $input['citizen_id_issuedate_text'];
-        $user->tax_id = $input['tax_id'];
-        $user->user_note = $input['user_note'];
-        $user->admin_flag = $input['admin_flag'];
-        $user->active_flag = $input['active_flag'];
-        $user->receive_noti_flag = $input['receive_noti_flag'];
-        $user->last_login_ts = $input['last_login_ts'];
-        $user->change_by = $input['change_by'];
-        $user->save();
-    }
+        // user
+        $account = $input['account'];
+        $user_info = $input['user_info'];
+        $this->create_user($account, $user_info, $uuid16);
 
-    public function delete($id) {
-        $user = UserRegister::findOrFail($id);
-        $user->delete();
+        // address
+        $contact_address = $input['contact_address'];
+        $this->create_contact($contact_address, $uuid16);
+        $doc_adress = $input['doc_address'];
+        $this->create_contact($doc_adress, $uuid16);
+
+        // other
+        $other_info = $input['other_info'];
+        $this->create_other($other_info, $uuid16);
     }
     #endregion
+    #endregion
+
+    #region Private Methods
+    private function create_user($account, $user_info, $uuid) {
+        DB::table('tm_user')->insert([
+            'useruuid' => $uuid,
+            'user_name' => $account['user_name'],
+            'email' => $account['email'],
+            'display_user_name' => $user_info['title_name_th'].$user_info['first_name_th'].' '.$user_info['last_name_th'],
+            //'picture_profile_url' => $user_info['picture_profile_url'],
+            'title_code_th' => $user_info['title_code_th'],
+            'title_name_th' => $user_info['title_name_th'],
+            'first_name_th' => $user_info['first_name_th'],
+            'last_name_th' => $user_info['last_name_th'],
+            'title_code_int' => $user_info['title_code_int'],
+            'title_name_int' => $user_info['title_name_int'],
+            'first_name_int' => $user_info['first_name_int'],
+            'last_name_int' => $user_info['last_name_int'],
+            'birth_date_dt' => $user_info['birth_date_dt'],
+            'birth_date_text' => $user_info['birth_date_text'],
+            'aged' => $user_info['aged'],
+            'gender_text' => $user_info['gender_text'],
+            'religion_code' => $user_info['religion_code'],
+            'religion_text' => $user_info['religion_text'],
+            'citizen_id' => $user_info['citizen_id'],
+            'citizen_id_issuedate_dt' => $user_info['citizen_id_issuedate_dt'],
+            'citizen_id_issuedate_text' => $user_info['citizen_id_issuedate_text'],
+            'tax_id' => $user_info['tax_id'],
+            //'user_note' => $user_info['user_note'],
+            'admin_flag' => 0,
+            'active_flag' => 1,
+            'receive_noti_flag' => 0,
+            'created_by' => 'admin'
+        ]);
+        
+        DB::table('tm_user_passwd')->insert([
+            'fk_useruuid' => $uuid,
+            'hash_pwd' => Hash::make($account['password']),
+            'active_flag' => 1,
+            'created_by' => 'admin'
+        ]);
+    }
+
+    private function create_contact($address, $uuid) {
+        DB::table('tm_user_contact')->insert([
+            'fk_useruuid' => $uuid,
+            'address_type' => $address['address_type'],
+            'address_type_txt' => $address['address_type_txt'],
+            'addr_no' => $address['addr_no'],
+            'addr_moo' => $address['addr_moo'],
+            'addr_building_village' => $address['addr_building_village'],
+            'addr_soi' => $address['addr_soi'],
+            'addr_thanon_road' => $address['addr_thanon_road'],
+            'addr_tambonid' => $address['addr_tambonid'],
+            'addr_tambon_name' => $address['addr_tambon_name'],
+            'addr_ampid' => $address['addr_ampid'],
+            'addr_amphur_name' => $address['addr_amphur_name'],
+            'addr_proid' => $address['addr_proid'],
+            'addr_province_name' => $address['addr_province_name'],
+            'telephone' => $address['telephone'],
+            'faxno' => $address['faxno'],
+            'mobilephone' => $address['mobilephone'],
+            'email' => $address['email'],
+            'active_flag' => 1,
+            'created_by' => 'admin'
+        ]);
+    }
+
+    private function create_other($other, $uuid) {
+        DB::table('tm_user_otherinfo')->insert([
+            'fk_useruuid' => $uuid,
+            'occupation_code' => $other['occupation_code'],
+            'occupation_name' => $other['occupation_name'],
+            'targetgroup_code' => $other['targetgroup_code'],
+            'targetgroup_text' => $other['targetgroup_text'],
+            'active_flag' => 1,
+            'created_by' => 'admin'
+        ]);
+    }
     #endregion
 }

@@ -25,9 +25,6 @@ class UserOtherInfo extends Model implements AuthenticatableContract, Authorizab
     protected $fillable = [
         'row_id',
         'fk_useruuid',
-        'education_code',
-        'education_degree',
-        'education_name',
         'occupation_code',
         'occupation_name',
         'targetgroup_code',

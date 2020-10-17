@@ -25,6 +25,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $fillable = [
         'row_id',
         'useruuid',
+        'user_name',
         'email',
         'display_user_name',
         'picture_profile_url',
@@ -51,9 +52,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'active_flag',
         'receive_noti_flag',
         'last_login_ts',
-        'created_at',
         'created_by',
-        'updated_at',
         'change_by'
     ];
 

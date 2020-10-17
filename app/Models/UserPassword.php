@@ -27,9 +27,7 @@ class UserPassword extends Model implements AuthenticatableContract, Authorizabl
         'fk_useruuid',
         'hash_pwd',
         'active_flag',
-        'created_at',
         'created_by',
-        'updated_at',
         'change_by'
     ];
 }
