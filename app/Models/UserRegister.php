@@ -23,13 +23,4 @@ class UserRegister extends Model implements AuthenticatableContract, Authorizabl
         'other_info',
         'other_doc'
     ];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    // protected $hidden = [
-    //     'password',
-    // ];
 }

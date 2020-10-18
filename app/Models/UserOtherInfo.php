@@ -33,13 +33,4 @@ class UserOtherInfo extends Model implements AuthenticatableContract, Authorizab
         'created_by',
         'change_by'
     ];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    // protected $hidden = [
-    //     'password',
-    // ];
 }

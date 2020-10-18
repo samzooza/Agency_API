@@ -46,13 +46,4 @@ class UserContact extends Model implements AuthenticatableContract, Authorizable
         'created_by',
         'change_by'
     ];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    // protected $hidden = [
-    //     'password',
-    // ];
 }
