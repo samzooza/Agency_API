@@ -27,7 +27,6 @@ class UserController extends Controller
         // validate
         $response = $this->validate($request, $this->regRepo->validate());
 
-        // create action
         return $this->regRepo->create($request);
     }
     #endregion

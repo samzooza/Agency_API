@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\UserPassword;
@@ -83,6 +84,14 @@ class UserRegisterRepository
             'other_info.targetgroup_text' => 'max:100'
         ];
     }
+
+    public function validatefileupload() {
+        return [
+            'category' => 'required',
+            'filename' => 'required',
+            'content' => 'required'
+        ];
+    }
     #endregion
 
     #region Create
@@ -104,6 +113,25 @@ class UserRegisterRepository
         // extract other
         $other_info = $input['other_info'];
         $this->create_otherinfo($other_info, $uuid16);
+
+        // extract fileuploads
+        $fileuploads = $input['fileuploads'];
+        $this->create_fileupload($fileuploads, $uuid16);
+
+        return $this->success();
+    }
+    #endregion
+    
+    #region Temp File Writer (action upload from UI)
+    public function tempwrite($request) {
+        $category = $request["category"];
+        $filename = $request["filename"];
+        $content = $request["content"];
+
+        // disk name in app\Config\filesystems
+        $tempdisk = 'temp_'.$category; 
+        // save file into app\storage\temp\*
+        Storage::disk($tempdisk)->put($filename, $content);
 
         return $this->success();
     }
@@ -188,9 +216,36 @@ class UserRegisterRepository
         $userOther->created_by = 'Webagency';
         $userOther->save();
     }
+
+    private function create_fileupload($files, $uuid) {
+        foreach ($files as $file) {
+            $category = $file["category"];
+            $filename = $file["filename"];
+            $filesystemname = $this->encrypt($filename);
+
+            // disk name in app\Config\filesystems
+            $tempdisk = 'temp_'.$category;
+            // get file content (app\storage\temp\*)
+            $content = Storage::disk($tempdisk)->get($filename);
+            
+            // disk name in app\Config\filesystems
+            $registereddisk = 'registered_'.$category;
+            // create file in 'registered' folder
+            Storage::disk($registereddisk)->put($filesystemname, $content);
+
+            // delete file in 'temp' folder
+            Storage::disk($tempdisk)->delete($filename, $content);
+        }
+    }
+    
     #endregion
     
     #region Helper
+    private function encrypt($filename) {
+        $extension = end(explode(".", $filename));
+        return Str::uuid()->toString().'.'.$extension;
+    }
+
     private function success() {
         $res['success'] = true;
         $res['status_code'] = 201;
