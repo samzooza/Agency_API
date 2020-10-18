@@ -2,10 +2,8 @@
 
 namespace App\Repository;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\UserPassword;
 use App\Models\UserContact;
@@ -19,7 +17,7 @@ class UserRegisterRepository
         return [
             // account
             'account.user_name' => 'required|min:8|max:100',
-            'account.email' => 'required|email|max:255|unique:tm_user',
+            'account.email' => 'required|email|max:255',
             'account.password' => 'required|min:8|max:100',
             // user_info
             'user_info.title_code_th' => 'required|max:20',
@@ -106,11 +104,14 @@ class UserRegisterRepository
         // extract other
         $other_info = $input['other_info'];
         $this->create_otherinfo($other_info, $uuid16);
+
+        return $this->success();
     }
     #endregion
     #endregion
 
     #region Private Methods
+    #region Process
     private function create_user($account, $info, $uuid) {
         $user = new User();
         $user->useruuid = $uuid;
@@ -140,14 +141,14 @@ class UserRegisterRepository
         $user->admin_flag = 0;
         $user->active_flag = 1;
         $user->receive_noti_flag = 0;
-        $user->created_by = 'admin';
+        $user->created_by = 'Webagency';
         $user->save();
 
         $userPass = new UserPassword();
         $userPass->fk_useruuid = $uuid;
         $userPass->hash_pwd = Hash::make($account['password']);
         $userPass->active_flag = 1;
-        $userPass->created_by = 'admin';
+        $userPass->created_by = 'Webagency';
         $userPass->save();
     }
 
@@ -172,7 +173,7 @@ class UserRegisterRepository
         $userCont->mobilephone = $address['mobilephone'];
         $userCont->email = $address['email'];
         $userCont->active_flag = 1;
-        $userCont->created_by = 'admin';
+        $userCont->created_by = 'Webagency';
         $userCont->save();
     }
 
@@ -184,8 +185,18 @@ class UserRegisterRepository
         $userOther->targetgroup_code = $otherinfo['targetgroup_code'];
         $userOther->targetgroup_text = $otherinfo['targetgroup_text'];
         $userOther->active_flag = 1;
-        $userOther->created_by = 'admin';
+        $userOther->created_by = 'Webagency';
         $userOther->save();
     }
+    #endregion
+    
+    #region Helper
+    private function success() {
+        $res['success'] = true;
+        $res['status_code'] = 201;
+        $res['message'] = 'successful';
+        return response()->json($res, 201);
+    }
+    #endregion
     #endregion
 }

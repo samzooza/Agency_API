@@ -28,22 +28,7 @@ class UserController extends Controller
         $response = $this->validate($request, $this->regRepo->validate());
 
         // create action
-        $response = $this->regRepo->create($request);
-
-        $res['message'] = "success";
-        $res['status_code'] = 201;
-        return response()->json($res, 201);
+        return $this->regRepo->create($request);
     }
-    #endregion
-
-    #region Helpers
-    private function wrapper($message, $status) {
-        // wrapper callback parameters
-        $wrap['message'] = $message;
-        $wrap['status_code'] = $status;
-
-        return response()->json($wrap, $status);
-    } 
-    #endregion
     #endregion
 }

@@ -37,12 +37,34 @@ $api->version('v1', function($api){
 });
 
 /* user register */
-$router->group(['prefix' => 'api/user'], function($router) {
-    $router->post('login', 'UserController@login');
-    $router->post('register', 'UserController@register');
+$router->group(['prefix' => 'api'], function($router) {
+    $router->group(['prefix' => 'user'], function($router) {
+        $router->post('login', 'UserController@login');
+        $router->post('register', 'UserController@register');
+    });
+
+    $router->group(['prefix' => 'upload'], function($router) {
+        $router->post('profile', [
+            'as' => 'file', 'uses' => 'FileController@writeprofile'
+        ]);
+        $router->post('idcard', [
+            'as' => 'file', 'uses' => 'FileController@writeidcard'
+        ]);
+        $router->post('houseregistration', [
+            'as' => 'file', 'uses' => 'FileController@writehouseregistration'
+        ]);
+        $router->post('license', [
+            'as' => 'file', 'uses' => 'FileController@writelicense'
+        ]);
+        $router->post('bookbank', [
+            'as' => 'file', 'uses' => 'FileController@writebookbank'
+        ]);
+    });
 });
 
-/*Sample*/
+
+
+/* sample */
 $router->group(['prefix' => 'api/samples'], function($router) {
     $router->get('get', 'SampleController@get');
     $router->get('get/{id}', 'SampleController@getById');

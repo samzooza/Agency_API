@@ -28,8 +28,8 @@ $app = new \Dusterio\LumenPassport\Lumen7Application(
 );
 
 $app->withFacades();
-
 $app->withEloquent();
+//class_alias('Illuminate\Support\Facades\Storage', 'Storage');
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +54,7 @@ $app->singleton(
 
 $app->configure('auth');
 $app->configure('cors');
+$app->configure('filesystems');
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +109,7 @@ $app->register(Laravel\Passport\PassportServiceProvider::class);
 $app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
 $app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+$app->register(Illuminate\Filesystem\FilesystemServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
