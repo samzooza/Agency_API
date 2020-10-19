@@ -38,6 +38,7 @@ class UserContact extends Model implements AuthenticatableContract, Authorizable
         'addr_amphur_name',
         'addr_proid',
         'addr_province_name',
+        'addr_zipcode',
         'telephone',
         'faxno',
         'mobilephone',

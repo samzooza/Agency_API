@@ -24,6 +24,11 @@ class UserController extends Controller
     }
 
     public function register(Request $request) {
+        // custom validation (temporary)
+        $exists = $this->regRepo->exists($request['account']);
+        if($exists)
+            return $this->regRepo->error("ชื่อผู้ใช้งานนี้มีอยู่แล้ว");
+
         // validate
         $response = $this->validate($request, $this->regRepo->validate());
 

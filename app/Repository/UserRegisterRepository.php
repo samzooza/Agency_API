@@ -54,9 +54,10 @@ class UserRegisterRepository
             'contactaddress.addramphurname' => 'max:50',
             'contactaddress.addrproid' => 'max:5',
             'contactaddress.addrprovincename' => 'max:20',
-            'contactaddress.mobilephone' => 'max:50',
-            'contactaddress.telephone' => 'max:50',
-            'contactaddress.faxno' => 'max:50',
+            'contactaddress.addrzipcode' => 'min:5|max:5|regex:/[0-9]{5}/',
+            'contactaddress.mobilephone' => 'max:10|regex:/^0\d\d?[0-9]{3}[0-9]{4}/',
+            'contactaddress.telephone' => 'max:10|regex:/^0\d\d?[0-9]{3}[0-9]{4}/',
+            'contactaddress.faxno' => 'max:9|regex:/^0\d[0-9]{3}[0-9]{4}/',
             'contactaddress.email' => 'email|max:100',
             'contactaddress.activeflag' => 'numeric',
             // doc_address
@@ -73,9 +74,10 @@ class UserRegisterRepository
             'docaddress.addramphur_name' => 'max:50',
             'docaddress.addrproid' => 'max:5',
             'docaddress.addrprovince_name' => 'max:20',
-            'docaddress.mobilephone' => 'max:50',
-            'docaddress.telephone' => 'max:50',
-            'docaddress.faxno' => 'max:50',
+            'docaddress.addrzipcode' => 'min:5|max:5|regex:/[0-9]{5}/',
+            'docaddress.mobilephone' => 'max:10|regex:/^0\d\d?[0-9]{3}[0-9]{4}/',
+            'docaddress.telephone' => 'max:10|regex:/^0\d\d?[0-9]{3}[0-9]{4}/',
+            'docaddress.faxno' => 'max:9|regex:/^0\d[0-9]{3}[0-9]{4}/',
             'docaddress.email' => 'email|max:100',
             'docaddress.activeflag' => 'numeric',
             //other_info
@@ -84,12 +86,23 @@ class UserRegisterRepository
         ];
     }
 
+    public function exists($account){
+        return User::where('user_name', '=', $account['username'])->get()->count();
+    }
+
     public function validatefileupload() {
         return [
             'category' => 'required',
             'filename' => 'required',
             'content' => 'required'
         ];
+    }
+
+    public function error($message) {
+        $res['success'] = false;
+        $res['status_code'] = 401;
+        $res['errors'] = $message;
+        return response()->json($res, 401);
     }
     #endregion
 
@@ -194,7 +207,7 @@ class UserRegisterRepository
         $userCont->addr_ampid = $address['addrampid'];
         $userCont->addr_amphur_name = $address['addramphurname'];
         $userCont->addr_proid = $address['addrproid'];
-        $userCont->addr_province_name = $address['addrprovincename'];
+        $userCont->addr_zipcode = $address['addrzipcode'];
         $userCont->telephone = $address['telephone'];
         $userCont->faxno = $address['faxno'];
         $userCont->mobilephone = $address['mobilephone'];
