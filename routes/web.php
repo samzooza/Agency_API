@@ -44,7 +44,9 @@ $router->group(['prefix' => 'api'], function($router) {
         $router->post('fileupload', [
             'as' => 'file', 'uses' => 'FileController@fileupload'
         ]);
-    }); 
+    });
+
+    $router->get('occupation', 'DirectDBController@getoccupation');
 });
 
 
