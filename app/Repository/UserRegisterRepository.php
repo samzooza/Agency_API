@@ -17,71 +17,71 @@ class UserRegisterRepository
     public function validate() {
         return [
             // account
-            'account.user_name' => 'required|min:8|max:100',
+            'account.username' => 'required|min:8|max:100',
             'account.email' => 'required|email|max:255',
             'account.password' => 'required|min:8|max:100',
             // user_info
-            'user_info.title_code_th' => 'required|max:20',
-            'user_info.title_name_th' => 'required|max:100',
-            'user_info.first_name_th' => 'required|max:100',
-            'user_info.last_name_th' => 'required|max:100',
-            'user_info.title_code_int' => 'max:20',
-            'user_info.title_name_th' => 'max:100',
-            'user_info.first_name_int' => 'max:100',
-            'user_info.last_name_int' => 'max:100',
-            'user_info.birth_date_dt' => 'date',
-            'user_info.birth_date_text' => 'max:8',
-            'user_info.aged' => 'numeric',
-            'user_info.gender_text' => 'required|max:50',
-            'user_info.religion_code' => 'max:20',
-            'user_info.religion_text' => 'max:20',
-            'user_info.citizen_id' => 'required|max:50',
-            'user_info.citizen_id_issuedate_dt' => 'required|date',
-            'user_info.citizen_id_issuedate_text' => 'required|max:8',
-            'user_info.tax_id' => 'max:50',
+            'userinfo.titlecodeth' => 'required|max:20',
+            'userinfo.titlenameth' => 'required|max:100',
+            'userinfo.firstnameth' => 'required|max:100',
+            'userinfo.lastnameth' => 'required|max:100',
+            'userinfo.titlecodeint' => 'max:20',
+            'userinfo.titlenameth' => 'max:100',
+            'userinfo.firstnameint' => 'max:100',
+            'userinfo.lastnameint' => 'max:100',
+            'userinfo.birthdatedt' => 'date',
+            'userinfo.birthdatetext' => 'max:8',
+            'userinfo.aged' => 'numeric',
+            'userinfo.gendertext' => 'required|max:50',
+            'userinfo.religioncode' => 'max:20',
+            'userinfo.religiontext' => 'max:20',
+            'userinfo.citizenid' => 'required|max:50',
+            'userinfo.citizenidissuedatedt' => 'required|date',
+            'userinfo.citizenidissuedatetext' => 'required|max:8',
+            'userinfo.taxid' => 'max:50',
             // contact_address
-            'contact_address.address_type' => 'required|numeric',
-            'contact_address.address_type_txt' => 'required|max:100',
-            'contact_address.addr_no' => 'max:100',
-            'contact_address.addr_moo' => 'max:100',
-            'contact_address.addr_building_village' => 'max:100',
-            'contact_address.addr_soi' => 'max:100',
-            'contact_address.addr_thanon_road' => 'max:100',
-            'contact_address.addr_tambonid' => 'numeric',
-            'contact_address.addr_tambon_name' => 'max:50',
-            'contact_address.addr_ampid' => 'numeric',
-            'contact_address.addr_amphur_name' => 'max:50',
-            'contact_address.addr_proid' => 'max:5',
-            'contact_address.addr_province_name' => 'max:20',
-            'contact_address.mobilephone' => 'max:50',
-            'contact_address.telephone' => 'max:50',
-            'contact_address.faxno' => 'max:50',
-            'contact_address.email' => 'email|max:100',
-            'contact_address.active_flag' => 'numeric',
+            'contactaddress.addresstype' => 'required|numeric',
+            'contactaddress.addresstypetxt' => 'required|max:100',
+            'contactaddress.addrno' => 'max:100',
+            'contactaddress.addrmoo' => 'max:100',
+            'contactaddress.addrbuildingvillage' => 'max:100',
+            'contactaddress.addrsoi' => 'max:100',
+            'contactaddress.addrthanonroad' => 'max:100',
+            'contactaddress.addrtambonid' => 'numeric',
+            'contactaddress.addrtambonname' => 'max:50',
+            'contactaddress.addrampid' => 'numeric',
+            'contactaddress.addramphurname' => 'max:50',
+            'contactaddress.addrproid' => 'max:5',
+            'contactaddress.addrprovincename' => 'max:20',
+            'contactaddress.mobilephone' => 'max:50',
+            'contactaddress.telephone' => 'max:50',
+            'contactaddress.faxno' => 'max:50',
+            'contactaddress.email' => 'email|max:100',
+            'contactaddress.activeflag' => 'numeric',
             // doc_address
-            'doc_address.address_type' => 'required|numeric',
-            'doc_address.address_type_txt' => 'required|max:100',
-            'doc_address.addr_no' => 'max:100',
-            'doc_address.addr_moo' => 'max:100',
-            'doc_address.addr_building_village' => 'max:100',
-            'doc_address.addr_soi' => 'max:100',
-            'doc_address.addr_thanon_road' => 'max:100',
-            'doc_address.addr_tambonid' => 'numeric',
-            'doc_address.addr_tambon_name' => 'max:50',
-            'doc_address.addr_ampid' => 'numeric',
-            'doc_address.addr_amphur_name' => 'max:50',
-            'doc_address.addr_proid' => 'max:5',
-            'doc_address.addr_province_name' => 'max:20',
-            'doc_address.mobilephone' => 'max:50',
-            'doc_address.telephone' => 'max:50',
-            'doc_address.faxno' => 'max:50',
-            'doc_address.email' => 'email|max:100',
-            'doc_address.active_flag' => 'numeric',
+            'docaddress.addresstype' => 'required|numeric',
+            'docaddress.addresstypetxt' => 'required|max:100',
+            'docaddress.addrno' => 'max:100',
+            'docaddress.addrmoo' => 'max:100',
+            'docaddress.addrbuildingvillage' => 'max:100',
+            'docaddress.addrsoi' => 'max:100',
+            'docaddress.addrthanon_road' => 'max:100',
+            'docaddress.addrtambonid' => 'numeric',
+            'docaddress.addrtambon_name' => 'max:50',
+            'docaddress.addrampid' => 'numeric',
+            'docaddress.addramphur_name' => 'max:50',
+            'docaddress.addrproid' => 'max:5',
+            'docaddress.addrprovince_name' => 'max:20',
+            'docaddress.mobilephone' => 'max:50',
+            'docaddress.telephone' => 'max:50',
+            'docaddress.faxno' => 'max:50',
+            'docaddress.email' => 'email|max:100',
+            'docaddress.activeflag' => 'numeric',
             //other_info
-            'other_info.occupation_code' => 'numeric',
-            'other_info.occupation_name' => 'max:100',
-            'other_info.targetgroup_code' => 'max:50',
-            'other_info.targetgroup_text' => 'max:100'
+            'otherinfo.occupationcode' => 'numeric',
+            'otherinfo.occupationname' => 'max:100',
+            'otherinfo.targetgroupcode' => 'max:50',
+            'otherinfo.targetgrouptext' => 'max:100'
         ];
     }
 
@@ -101,22 +101,22 @@ class UserRegisterRepository
 
         // extract user
         $account = $input['account'];
-        $info = $input['user_info'];
+        $info = $input['userinfo'];
         $this->create_user($account, $info, $uuid16);
 
         // extract address
-        $contact_address = $input['contact_address'];
+        $contact_address = $input['contactaddress'];
         $this->create_contact($contact_address, $uuid16);
-        $doc_adress = $input['doc_address'];
+        $doc_adress = $input['docaddress'];
         $this->create_contact($doc_adress, $uuid16);
 
         // extract other
-        $other_info = $input['other_info'];
+        $other_info = $input['otherinfo'];
         $this->create_otherinfo($other_info, $uuid16);
 
-        // extract fileuploads
-        $fileuploads = $input['fileuploads'];
-        $this->create_fileupload($fileuploads, $uuid16);
+        //// extract fileuploads
+        //$fileuploads = $input['fileuploads'];
+        //$this->create_fileupload($fileuploads, $uuid16);
 
         return $this->success();
     }
@@ -143,29 +143,29 @@ class UserRegisterRepository
     private function create_user($account, $info, $uuid) {
         $user = new User();
         $user->useruuid = $uuid;
-        $user->user_name = $account['user_name'];
+        $user->user_name = $account['username'];
         $user->email = $account['email'];
-        $user->display_user_name = $info['title_name_th'].$info['first_name_th'].' '.$info['last_name_th'];
-        //'picture_profile_url = $info['picture_profile_url'];
-        $user->title_code_th = $info['title_code_th'];
-        $user->title_name_th = $info['title_name_th'];
-        $user->first_name_th = $info['first_name_th'];
-        $user->last_name_th = $info['last_name_th'];
-        $user->title_code_int = $info['title_code_int'];
-        $user->title_name_int = $info['title_name_int'];
-        $user->first_name_int = $info['first_name_int'];
-        $user->last_name_int = $info['last_name_int'];
-        $user->birth_date_dt = $info['birth_date_dt'];
-        $user->birth_date_text = $info['birth_date_text'];
+        $user->display_user_name = $info['titlenameth'].$info['firstnameth'].' '.$info['lastnameth'];
+        //'picture_profile_url = $info['pictureprofileurl'];
+        $user->title_code_th = $info['titlecodeth'];
+        $user->title_name_th = $info['titlenameth'];
+        $user->first_name_th = $info['firstnameth'];
+        $user->last_name_th = $info['lastnameth'];
+        $user->title_code_int = $info['titlecodeint'];
+        $user->title_name_int = $info['titlenameint'];
+        $user->first_name_int = $info['firstnameint'];
+        $user->last_name_int = $info['lastnameint'];
+        $user->birth_date_dt = $info['birthdatedt'];
+        $user->birth_date_text = $info['birthdatetext'];
         $user->aged = $info['aged'];
-        $user->gender_text = $info['gender_text'];
-        $user->religion_code = $info['religion_code'];
-        $user->religion_text = $info['religion_text'];
-        $user->citizen_id = $info['citizen_id'];
-        $user->citizen_id_issuedate_dt = $info['citizen_id_issuedate_dt'];
-        $user->citizen_id_issuedate_text = $info['citizen_id_issuedate_text'];
-        $user->tax_id = $info['tax_id'];
-        //'user_note' = $info['user_note'];
+        $user->gender_text = $info['gendertext'];
+        $user->religion_code = $info['religioncode'];
+        $user->religion_text = $info['religiontext'];
+        $user->citizen_id = $info['citizenid'];
+        $user->citizen_id_issuedate_dt = $info['citizenidissuedatedt'];
+        $user->citizen_id_issuedate_text = $info['citizenidissuedatetext'];
+        $user->tax_id = $info['taxid'];
+        //'user_note' = $info['usernote'];
         $user->admin_flag = 0;
         $user->active_flag = 1;
         $user->receive_noti_flag = 0;
@@ -183,19 +183,19 @@ class UserRegisterRepository
     private function create_contact($address, $uuid) {
         $userCont = new UserContact();
         $userCont->fk_useruuid = $uuid;
-        $userCont->address_type = $address['address_type'];
-        $userCont->address_type_txt = $address['address_type_txt'];
-        $userCont->addr_no = $address['addr_no'];
-        $userCont->addr_moo = $address['addr_moo'];
-        $userCont->addr_building_village = $address['addr_building_village'];
-        $userCont->addr_soi = $address['addr_soi'];
-        $userCont->addr_thanon_road = $address['addr_thanon_road'];
-        $userCont->addr_tambonid = $address['addr_tambonid'];
-        $userCont->addr_tambon_name = $address['addr_tambon_name'];
-        $userCont->addr_ampid = $address['addr_ampid'];
-        $userCont->addr_amphur_name = $address['addr_amphur_name'];
-        $userCont->addr_proid = $address['addr_proid'];
-        $userCont->addr_province_name = $address['addr_province_name'];
+        $userCont->address_type = $address['addresstype'];
+        $userCont->address_type_txt = $address['addresstypetxt'];
+        $userCont->addr_no = $address['addrno'];
+        $userCont->addr_moo = $address['addrmoo'];
+        $userCont->addr_building_village = $address['addrbuildingvillage'];
+        $userCont->addr_soi = $address['addrsoi'];
+        $userCont->addr_thanon_road = $address['addrthanonroad'];
+        $userCont->addr_tambonid = $address['addrtambonid'];
+        $userCont->addr_tambon_name = $address['addrtambonname'];
+        $userCont->addr_ampid = $address['addrampid'];
+        $userCont->addr_amphur_name = $address['addramphurname'];
+        $userCont->addr_proid = $address['addrproid'];
+        $userCont->addr_province_name = $address['addrprovincename'];
         $userCont->telephone = $address['telephone'];
         $userCont->faxno = $address['faxno'];
         $userCont->mobilephone = $address['mobilephone'];
@@ -208,10 +208,10 @@ class UserRegisterRepository
     private function create_otherinfo($otherinfo, $uuid) {
         $userOther = new UserOtherInfo();
         $userOther->fk_useruuid = $uuid;
-        $userOther->occupation_code = $otherinfo['occupation_code'];
-        $userOther->occupation_name = $otherinfo['occupation_name'];
-        $userOther->targetgroup_code = $otherinfo['targetgroup_code'];
-        $userOther->targetgroup_text = $otherinfo['targetgroup_text'];
+        $userOther->occupation_code = $otherinfo['occupationcode'];
+        $userOther->occupation_name = $otherinfo['occupationname'];
+        $userOther->targetgroup_code = $otherinfo['targetgroupcode'];
+        $userOther->targetgroup_text = $otherinfo['targetgrouptext'];
         $userOther->active_flag = 1;
         $userOther->created_by = 'Webagency';
         $userOther->save();
