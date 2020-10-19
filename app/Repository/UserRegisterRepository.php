@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserPassword;
 use App\Models\UserContact;
 use App\Models\UserOtherInfo;
+use App\Models\UserOtherInfo_Targetgroup;
 
 class UserRegisterRepository 
 {
@@ -79,9 +80,7 @@ class UserRegisterRepository
             'docaddress.activeflag' => 'numeric',
             //other_info
             'otherinfo.occupationcode' => 'numeric',
-            'otherinfo.occupationname' => 'max:100',
-            'otherinfo.targetgroupcode' => 'max:50',
-            'otherinfo.targetgrouptext' => 'max:100'
+            'otherinfo.occupationname' => 'max:100'
         ];
     }
 
@@ -210,11 +209,17 @@ class UserRegisterRepository
         $userOther->fk_useruuid = $uuid;
         $userOther->occupation_code = $otherinfo['occupationcode'];
         $userOther->occupation_name = $otherinfo['occupationname'];
-        $userOther->targetgroup_code = $otherinfo['targetgroupcode'];
-        $userOther->targetgroup_text = $otherinfo['targetgrouptext'];
         $userOther->active_flag = 1;
         $userOther->created_by = 'Webagency';
         $userOther->save();
+
+        $targets = $otherinfo['targetgroup'];
+        foreach ($targets as $target) {
+            $usertarget = new UserOtherInfo_Targetgroup();
+            $usertarget->fk_useruuid = $uuid;
+            $usertarget->targetgroup_code = $target['value'];
+            $usertarget->save();
+        }
     }
 
     private function create_fileupload($files, $uuid) {

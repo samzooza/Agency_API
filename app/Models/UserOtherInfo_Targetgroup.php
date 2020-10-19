@@ -11,7 +11,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 use Dusterio\LumenPassport\LumenPassport;
 
-class UserOtherInfo extends Model implements AuthenticatableContract, AuthorizableContract
+class UserOtherInfo_Targetgroup extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use HasApiTokens, Authenticatable, Authorizable;
 
@@ -21,14 +21,11 @@ class UserOtherInfo extends Model implements AuthenticatableContract, Authorizab
      * @var array
      */
 
-    protected $table ='tm_user_otherinfo';
+    protected $table ='tm_user_targetgroup';
     protected $fillable = [
-        'row_id',
         'fk_useruuid',
-        'occupation_code',
-        'occupation_name',
-        'active_flag',
-        'created_by',
-        'change_by'
+        'targetgroup_code',
+        'created_at',
+        'updated_at'
     ];
 }
