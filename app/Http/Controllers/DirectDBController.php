@@ -13,7 +13,6 @@ class DirectDBController extends Controller
         $this->dbRepo = $dbRepo;
     }
 
-    public function getoccupation() {
-        return $this->dbRepo->getoccupation();
-    }
+    public function getoccupation() { return $this->dbRepo->getoccupation(); }
+    public function gettargetgroup() { return $this->dbRepo->gettargetgroup(); }
 }

@@ -47,6 +47,7 @@ $router->group(['prefix' => 'api'], function($router) {
     });
 
     $router->get('occupation/get', 'DirectDBController@getoccupation');
+    $router->get('targetgroup/get', 'DirectDBController@gettargetgroup');
 });
 
 

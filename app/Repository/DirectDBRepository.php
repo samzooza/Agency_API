@@ -12,5 +12,10 @@ class DirectDBRepository
         return DB::connection('mysql')
         ->select("SELECT occupation_code as value, occupation_name as text FROM tm_occupation");
     }
+
+    public function gettargetgroup() {
+        return DB::connection('mysql')
+        ->select("SELECT targetgroup_code as value, targetgroup_text as text FROM tm_targetgroup");
+    }
     #endregion
 }
