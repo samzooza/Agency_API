@@ -24,7 +24,7 @@ class UserOtherInfo_Targetgroup extends Model implements AuthenticatableContract
     protected $table ='tm_user_targetgroup';
     protected $fillable = [
         'fk_useruuid',
-        'targetgroup_code',
+        'targetgroup_text',
         'created_at',
         'updated_at'
     ];
