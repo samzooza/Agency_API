@@ -48,50 +48,6 @@ return [
     */
 
     'disks' => [
-        /* temporary: uploaded and waiting for complete register */
-        'temp_profile' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/temp/profile'),
-        ],
-        'temp_id_card' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/temp/id_card'),
-        ],
-        'temp_house_registration' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/temp/house_registration'),
-        ],
-        'temp_license' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/temp/license'),
-        ],
-        'temp_bookbank' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/temp/bookbank'),
-        ],
-
-        /* registered: registered completely */
-        'registered_profile' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/registered/profile'),
-        ],
-        'registered_id_card' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/registered/id_card'),
-        ],
-        'registered_house_registration' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/registered/house_registration'),
-        ],
-        'registered_license' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/registered/license'),
-        ],
-        'registered_bookbank' => [
-            'driver' => 'local',
-            'root' => storage_path('filedrop/registered/bookbank'),
-        ],
-        
         /* default */
         'local' => [
             'driver' => 'local',

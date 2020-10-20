@@ -10,6 +10,7 @@ use App\Models\UserPassword;
 use App\Models\UserContact;
 use App\Models\UserOtherInfo;
 use App\Models\UserOtherInfo_Targetgroup;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserRegisterRepository 
 {
@@ -126,24 +127,9 @@ class UserRegisterRepository
         $other_info = $input['otherinfo'];
         $this->create_otherinfo($other_info, $uuid16);
 
-        //// extract fileuploads
-        //$fileuploads = $input['fileuploads'];
-        //$this->create_fileupload($fileuploads, $uuid16);
-
-        return $this->success();
-    }
-    #endregion
-    
-    #region Temp File Writer (action upload from UI)
-    public function tempwrite($request) {
-        $category = $request["category"];
-        $filename = $request["filename"];
-        $content = $request["content"];
-
-        // disk name in app\Config\filesystems
-        $tempdisk = 'temp_'.$category; 
-        // save file into app\storage\temp\*
-        Storage::disk($tempdisk)->put($filename, $content);
+        // extract fileuploads
+        $fileuploads = $input['fileuploads'];
+        $this->create_fileupload($fileuploads, $uuid16);
 
         return $this->success();
     }
@@ -241,18 +227,7 @@ class UserRegisterRepository
             $filename = $file["filename"];
             $filesystemname = $this->encrypt($filename);
 
-            // disk name in app\Config\filesystems
-            $tempdisk = 'temp_'.$category;
-            // get file content (app\storage\temp\*)
-            $content = Storage::disk($tempdisk)->get($filename);
-            
-            // disk name in app\Config\filesystems
-            $registereddisk = 'registered_'.$category;
-            // create file in 'registered' folder
-            Storage::disk($registereddisk)->put($filesystemname, $content);
-
-            // delete file in 'temp' folder
-            Storage::disk($tempdisk)->delete($filename, $content);
+            ///// MOVEFILE
         }
     }
     
@@ -261,7 +236,10 @@ class UserRegisterRepository
     #region Helper
     private function encrypt($filename) {
         $extension = end(explode(".", $filename));
-        return Str::uuid()->toString().'.'.$extension;
+        $nanotime = (int) (microtime(true) * 1000000);
+        $image = strtoupper(substr($filename, 0, 1)). '-' . "1" . '-' . $nanotime  . '.' . $file_ext;
+
+        return $image.'.'.$extension;
     }
 
     private function success() {
