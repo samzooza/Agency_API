@@ -88,7 +88,7 @@ class UserRegisterRepository
             if ($request->hasFile($file)) {
                 $foo = (object) [$file => ""];
                 $original_filename = $request->file($file)->getClientOriginalName();
-                $destination_path = './public/filedrop/'.$file;
+                $destination_path = './filedrop/'.$file;
 
                 $filename_arr = explode('.', $original_filename);
                 $file_ext = strtolower(end($filename_arr));
@@ -99,7 +99,7 @@ class UserRegisterRepository
                 if ($request->file($file)->move($destination_path, $encryptname)) {
                     $ret = new UserRegisterDoc();
                     $ret->docutypename = $file;
-                    $ret->filepath = '/public/filedrop/'.$file;
+                    $ret->filepath = '/filedrop/'.$file;
                     $ret->filename = $encryptname;
                     $ret->filessize = $filessize;
                     $ret->filetype = $file_ext;
