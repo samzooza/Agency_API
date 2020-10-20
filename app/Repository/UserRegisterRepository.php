@@ -33,7 +33,7 @@ class UserRegisterRepository
             'userinfo.aged' => 'numeric',
             'userinfo.gendertext' => 'required|max:50',
             'userinfo.religiontext' => 'max:20',
-            'userinfo.citizenid' => 'required|max:50',
+            'userinfo.citizenid' => 'required|min:13|max:13',
             'userinfo.citizenidissuedatedt' => 'required|date',
             'userinfo.taxid' => 'max:50',
             'userinfo.activeflag' => 'numeric',
@@ -85,11 +85,24 @@ class UserRegisterRepository
         ];
     }
 
-    public function error($message) {
-        $res['success'] = false;
-        $res['status_code'] = 401;
-        $res['errors'] = $message;
-        return response()->json($res, 401);
+    public function fileupload(Request $request) {
+        $response = null;
+        $array = ["profile", "id_card", "house_registration", "license", "bookbank"];
+
+        foreach($array as $file){
+            if ($request->hasFile($file)) {
+                $foo = (object) [$file => ""];
+                $original_filename = $request->file($file)->getClientOriginalName();
+                $destination_path = './filedrop/upload/'.$file;
+
+                if ($request->file($file)->move($destination_path, $original_filename)) {
+                    $foo->image = '/filedrop/upload/'.$file.'/'. $original_filename;
+                    return $this->success($foo);
+                } else {
+                    return $this->error('Cannot upload file');
+                }
+            }
+        }
     }
     #endregion
 
@@ -103,7 +116,7 @@ class UserRegisterRepository
         $info = $input['userinfo'];
         $this->create_user($account, $info, $uuid16);
 
-        // extract address
+        // // extract address
         $contact_address = $input['contactaddress'];
         $this->create_contact(1, "ที่อยู่ติดต่อ", $contact_address, $uuid16);
         $doc_adress = $input['docaddress'];
@@ -113,11 +126,11 @@ class UserRegisterRepository
         $other_info = $input['otherinfo'];
         $this->create_otherinfo($other_info, $uuid16);
 
-        // extract fileuploads
-        //$fileuploads = $input['fileuploads'];
-        //$this->create_fileupload($fileuploads, $uuid16);
+        // // extract fileuploads
+        // $fileuploads = $input['fileuploads'];
+        // $this->create_fileupload($fileuploads, $uuid16);
 
-        return $this->success();
+        return $this->success("successful");
     }
     #endregion
     #endregion
@@ -157,11 +170,11 @@ class UserRegisterRepository
         $userPass->save();
     }
 
-    private function create_contact($no, $type, $address, $uuid) {
+    private function create_contact($ano, $atype, $address, $uuid) {
         $userCont = new UserContact();
         $userCont->fk_useruuid = $uuid;
-        $userCont->address_type = $no;
-        $userCont->address_type_txt = $type;
+        $userCont->address_type = $ano;
+        $userCont->address_type_txt = $atype;
         $userCont->addr_no = $address['addrno'];
         $userCont->addr_moo = $address['addrmoo'];
         $userCont->addr_building_village = $address['addrbuildingvillage'];
@@ -169,6 +182,7 @@ class UserRegisterRepository
         $userCont->addr_thanon_road = $address['addrthanonroad'];
         $userCont->addr_tambon_name = $address['addrtambonname'];
         $userCont->addr_amphur_name = $address['addramphurname'];
+        $userCont->addr_province_name = $address['addrprovincename'];
         $userCont->addr_zipcode = $address['addrzipcode'];
         $userCont->telephone = $address['telephone'];
         $userCont->faxno = $address['faxno'];
@@ -210,6 +224,7 @@ class UserRegisterRepository
             $filesystemname = $this->encrypt($filename);
 
             ///// MOVEFILE
+
         }
     }
     
@@ -224,11 +239,18 @@ class UserRegisterRepository
         return $image.'.'.$extension;
     }
 
-    private function success() {
-        $res['success'] = true;
-        $res['status_code'] = 201;
-        $res['message'] = 'successful';
-        return response()->json($res, 201);
+    private function success($ret = '')
+    {
+        return response()->json(['status' => 'success', 'data' => $ret], 200)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    }
+
+    public function error($message = 'Bad request', $statusCode = 200)
+    {
+        return response()->json(['status' => 'error', 'error' => $message], $statusCode)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
     #endregion
     #endregion
