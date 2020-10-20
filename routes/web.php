@@ -42,7 +42,7 @@ $router->group(['prefix' => 'api'], function($router) {
         $router->post('login', 'UserController@login');
         $router->post('register', 'UserController@register');
         $router->post('fileupload', [
-            'as' => 'file', 'uses' => 'FileController@fileupload'
+            'as' => 'file', 'uses' => 'UserController@fileupload'
         ]);
     });
 

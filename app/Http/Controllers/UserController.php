@@ -34,5 +34,9 @@ class UserController extends Controller
 
         return $this->regRepo->create($request);
     }
+
+    public function fileupload(Request $request) {
+        return $this->regRepo->fileupload($request);
+    }
     #endregion
 }

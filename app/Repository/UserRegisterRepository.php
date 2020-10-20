@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -10,7 +11,9 @@ use App\Models\UserPassword;
 use App\Models\UserContact;
 use App\Models\UserOtherInfo;
 use App\Models\UserOtherInfo_Targetgroup;
+use App\Models\UserRegisterDoc;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Finder\SplFileInfo;
 
 class UserRegisterRepository 
 {
@@ -77,15 +80,7 @@ class UserRegisterRepository
         return User::where('user_name', '=', $account['username'])->get()->count();
     }
 
-    public function validatefileupload() {
-        return [
-            'category' => 'required',
-            'filename' => 'required',
-            'content' => 'required'
-        ];
-    }
-
-    public function fileupload(Request $request) {
+    public function fileupload($request) {
         $response = null;
         $array = ["profile", "id_card", "house_registration", "license", "bookbank"];
 
@@ -93,13 +88,28 @@ class UserRegisterRepository
             if ($request->hasFile($file)) {
                 $foo = (object) [$file => ""];
                 $original_filename = $request->file($file)->getClientOriginalName();
-                $destination_path = './filedrop/upload/'.$file;
+                $destination_path = './public/filedrop/'.$file;
 
-                if ($request->file($file)->move($destination_path, $original_filename)) {
-                    $foo->image = '/filedrop/upload/'.$file.'/'. $original_filename;
-                    return $this->success($foo);
+                $filename_arr = explode('.', $original_filename);
+                $file_ext = strtolower(end($filename_arr));
+                $nanotime = (int) (microtime(true) * 1000000);
+                $encryptname = strtoupper(substr($file, 0, 1)). '-' . "1" . '-' . $nanotime  . '.' . $file_ext;
+                $filessize = $request->file($file)->getSize();
+
+                if ($request->file($file)->move($destination_path, $encryptname)) {
+                    $ret = new UserRegisterDoc();
+                    $ret->docutypename = $file;
+                    $ret->filepath = '/public/filedrop/'.$file;
+                    $ret->filename = $encryptname;
+                    $ret->filessize = $filessize;
+                    $ret->filetype = $file_ext;
+                    
+                    return response()->json(['status' => 'success', 'fileuploads' => $ret], 200)
+                        ->header('Access-Control-Allow-Origin', '*')
+                        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+
                 } else {
-                    return $this->error('Cannot upload file');
+                    return $this->error('Cannot upload file', 500);
                 }
             }
         }
@@ -126,11 +136,29 @@ class UserRegisterRepository
         $other_info = $input['otherinfo'];
         $this->create_otherinfo($other_info, $uuid16);
 
-        // // extract fileuploads
-        // $fileuploads = $input['fileuploads'];
-        // $this->create_fileupload($fileuploads, $uuid16);
+        // extract fileuploads
+        // try{
+        //     $fileuploads = $input['fileuploads'];
+        //     //$this->create_registerdoc($fileuploads, $uuid16);
+        // } catch (Exception $e) {}
 
         return $this->success("successful");
+    }
+    #endregion
+
+    #region Validation Message
+    private function success($ret = '')
+    {
+        return response()->json(['status' => 'success', 'data' => $ret], 200)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    }
+
+    public function error($message = 'Bad request', $statusCode = 200)
+    {
+        return response()->json(['status' => 'error', 'error' => $message], $statusCode)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
     #endregion
     #endregion
@@ -217,40 +245,17 @@ class UserRegisterRepository
         }
     }
 
-    private function create_fileupload($files, $uuid) {
-        foreach ($files as $file) {
-            $category = $file["category"];
-            $filename = $file["filename"];
-            $filesystemname = $this->encrypt($filename);
-
-            ///// MOVEFILE
-
+    private function create_registerdoc($regisfiles, $uuid) {
+        foreach ($regisfiles as $regisfile) {
+            $ret = new UserRegisterDoc();
+            $ret->fk_useruuid = $uuid;
+            $ret->docu_type_name = $regisfile["docutypename"];
+            $ret->filepath = $regisfile["filepath"];
+            $ret->filename = $regisfile["filename"];
+            $ret->filessize = $regisfile["filessize"];
+            $ret->filetype = $regisfile["filetype"];
+            $ret->save();
         }
-    }
-    
-    #endregion
-    
-    #region Helper
-    private function encrypt($filename) {
-        $extension = end(explode(".", $filename));
-        $nanotime = (int) (microtime(true) * 1000000);
-        $image = strtoupper(substr($filename, 0, 1)). '-' . "1" . '-' . $nanotime  . '.' . $file_ext;
-
-        return $image.'.'.$extension;
-    }
-
-    private function success($ret = '')
-    {
-        return response()->json(['status' => 'success', 'data' => $ret], 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    }
-
-    public function error($message = 'Bad request', $statusCode = 200)
-    {
-        return response()->json(['status' => 'error', 'error' => $message], $statusCode)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
     #endregion
     #endregion

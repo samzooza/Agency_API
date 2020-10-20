@@ -11,7 +11,7 @@ use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 use Dusterio\LumenPassport\LumenPassport;
 
-class UserDoc extends Model implements AuthenticatableContract, AuthorizableContract
+class UserRegisterDoc extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use HasApiTokens, Authenticatable, Authorizable;
 
@@ -32,6 +32,7 @@ class UserDoc extends Model implements AuthenticatableContract, AuthorizableCont
         'filessize',
         'filetype',
         'created_at',
-        'change_by'
+        'change_by',
+        'updated_at'
     ];
 }

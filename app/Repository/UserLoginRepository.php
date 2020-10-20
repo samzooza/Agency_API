@@ -12,32 +12,30 @@ class UserLoginRepository
     public function validate($input) {
         $login_user = User::where('user_name', $input['user_name'])->first();
         if(!$login_user)
-            return $this->error('Your username incorrect');
+            return $this->error('Your username incorrect', 401);
         else {
             $password = UserPassword::where('fk_useruuid', $login_user->useruuid)->first();
             if(!Hash::check($input['password'], $password->hash_pwd))
-                return $this->error('Your password incorrect');
+                return $this->error('Your password incorrect', 401);
         }
 
         return $this->success($login_user);
     }
     #endregion
 
-    #region Private Methods
-    #region Helper
-    private function success($login_user) {
-        $res['success'] = true;
-        $res['status_code'] = 200;
-        $res['message'] = 'successful';
-        $res['user'] = $login_user;
-        return response()->json($res, 200);
+    #region Validation Message
+    public function success($ret = '')
+    {
+        return response()->json(['status' => 'success', 'data' => $ret], 200)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
 
-    private function error($message) {
-        $res['success'] = false;
-        $res['status_code'] = 401;
-        $res['message'] = $message;
-        return response()->json($res, 401);
+    public function error($message = 'Bad request', $statusCode = 200)
+    {
+        return response()->json(['status' => 'error', 'error' => $message], $statusCode)
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
     #endregion
     #endregion
