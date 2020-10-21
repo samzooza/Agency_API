@@ -137,10 +137,10 @@ class UserRegisterRepository
         $this->create_otherinfo($other_info, $uuid16);
 
         // extract fileuploads
-        // try{
-        //     $fileuploads = $input['fileuploads'];
-        //     //$this->create_registerdoc($fileuploads, $uuid16);
-        // } catch (Exception $e) {}
+        try{
+            $fileuploads = $input['fileuploads'];
+            //$this->create_registerdoc($fileuploads, $uuid16);
+        } catch (Exception $e) {}
 
         return $this->success("successful");
     }
