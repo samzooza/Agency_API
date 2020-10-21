@@ -254,6 +254,7 @@ class UserRegisterRepository
             $ret->filename = $regisfile["filename"];
             $ret->filessize = $regisfile["filessize"];
             $ret->filetype = $regisfile["filetype"];
+            $ret->created_by = 'Webagency';
             $ret->save();
         }
     }
