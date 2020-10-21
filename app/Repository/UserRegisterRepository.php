@@ -139,7 +139,7 @@ class UserRegisterRepository
         // extract fileuploads
         try{
             $fileuploads = $input['fileuploads'];
-            //$this->create_registerdoc($fileuploads, $uuid16);
+            $this->create_registerdoc($fileuploads, $uuid16);
         } catch (Exception $e) {}
 
         return $this->success("successful");
