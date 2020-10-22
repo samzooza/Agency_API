@@ -25,12 +25,20 @@ class UserController extends Controller
 
     public function register(Request $request) {
         // custom validation (temporary)
-        $exists = $this->regRepo->exists($request['account']);
-        if($exists)
-            return $this->regRepo->error("ชื่อผู้ใช้งานนี้มีอยู่แล้ว", 401);
+        if($this->regRepo->username_exists($request['account']))
+            return $this->regRepo->error(
+                'The given data was invalid.',
+                ['account.username' => 'ชื่อผู้ใช้งานนี้มีอยู่แล้ว'],
+                401);
 
-        // validate
-        $response = $this->validate($request, $this->regRepo->validate());
+        if($this->regRepo->citizenid_exists($request['userinfo']))
+            return $this->regRepo->error(
+                'The given data was invalid.',
+                ['userinfo.citizenid' => 'เลขบัตรประชนนี้มีอยู่แล้ว'],
+                401);
+
+        // dingo full validation
+        $this->validate($acc, $this->regRepo->validate());
 
         return $this->regRepo->create($request);
     }

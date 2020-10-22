@@ -76,13 +76,27 @@ class UserRegisterRepository
         ];
     }
 
-    public function exists($account){
+    public function username_exists($account){
         return User::where('user_name', '=', $account['username'])->get()->count();
     }
 
+    public function citizenid_exists($userinfo){
+        return User::where('citizen_id', '=', $userinfo['citizenid'])->get()->count();
+    }
+    #endregion
+
+    #region File Upload
     public function fileupload($request) {
         $response = null;
-        $array = ["profile", "id_card", "house_registration", "license", "bookbank"];
+        $array = [
+            "profile_picture",
+            "id_card",
+            "house_registration",
+            "license",
+            "fixed_deposit",
+            "bank_deposit",
+            "office_location"
+        ];
 
         foreach($array as $file){
             if ($request->hasFile($file)) {
@@ -104,12 +118,16 @@ class UserRegisterRepository
                     $ret->filessize = $filessize;
                     $ret->filetype = $file_ext;
                     
-                    return response()->json(['status' => 'success', 'fileuploads' => $ret], 200)
-                        ->header('Access-Control-Allow-Origin', '*')
-                        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+                    return response()->json([
+                        'status' => 'success',
+                        'fileuploads' => $ret,
+                        'status_code' => 200
+                    ], 200)
+                    ->header('Access-Control-Allow-Origin', '*')
+                    ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 
                 } else {
-                    return $this->error('Cannot upload file', 500);
+                    return $this->error('Cannot upload file','', 500);
                 }
             }
         }
@@ -126,7 +144,7 @@ class UserRegisterRepository
         $info = $input['userinfo'];
         $this->create_user($account, $info, $uuid16);
 
-        // // extract address
+        // extract address
         $contact_address = $input['contactaddress'];
         $this->create_contact(1, "ที่อยู่ติดต่อ", $contact_address, $uuid16);
         $doc_adress = $input['docaddress'];
@@ -147,18 +165,27 @@ class UserRegisterRepository
     #endregion
 
     #region Validation Message
-    private function success($ret = '')
+    private function success($data = '')
     {
-        return response()->json(['status' => 'success', 'data' => $ret], 200)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        return response()->json([
+            'status' => 'success',
+            'data' => $data,
+            'status_code' => 200
+        ], 200)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
 
-    public function error($message = 'Bad request', $statusCode = 200)
+    public function error($message = 'The given data was invalid.', $errors = '', $statusCode = 401)
     {
-        return response()->json(['status' => 'error', 'error' => $message], $statusCode)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        return response()->json([
+            'status' => 'error',
+            'message' => $message,
+            'errors' => $errors,
+            'status_code' => $statusCode
+        ], $statusCode)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
     #endregion
     #endregion
