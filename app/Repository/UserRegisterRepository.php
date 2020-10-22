@@ -126,9 +126,8 @@ class UserRegisterRepository
                     ->header('Access-Control-Allow-Origin', '*')
                     ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 
-                } else {
-                    return $this->error('Cannot upload file','', 500);
-                }
+                } else
+                    return $this->error('Cannot upload file', '', 500);
             }
         }
     }
@@ -176,7 +175,7 @@ class UserRegisterRepository
         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
 
-    public function error($message = 'The given data was invalid.', $errors = '', $statusCode = 401)
+    public function error($message, $errors, $statusCode)
     {
         return response()->json([
             'status' => 'error',
